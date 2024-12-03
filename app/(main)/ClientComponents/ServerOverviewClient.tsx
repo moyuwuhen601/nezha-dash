@@ -8,6 +8,10 @@ import { useFilter } from "@/lib/network-filter-context";
 import { useStatus } from "@/lib/status-context";
 import { cn, formatBytes, nezhaFetcher } from "@/lib/utils";
 import blogMan from "@/public/blog-man.webp";
+import {
+  ArrowDownCircleIcon,
+  ArrowUpCircleIcon,
+} from "@heroicons/react/20/solid";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -52,7 +56,7 @@ export default function ServerOverviewClient() {
             "pointer-events-none": global,
           })}
         >
-          <CardContent className="px-6 py-3">
+          <CardContent className="flex h-full items-center px-6 py-3">
             <section className="flex flex-col gap-1">
               <p className="text-sm font-medium md:text-base">
                 {t("p_816-881_Totalservers")}
@@ -91,7 +95,7 @@ export default function ServerOverviewClient() {
             },
           )}
         >
-          <CardContent className="px-6 py-3">
+          <CardContent className="flex h-full items-center px-6 py-3">
             <section className="flex flex-col gap-1">
               <p className="text-sm font-medium md:text-base">
                 {t("p_1610-1676_Onlineservers")}
@@ -131,7 +135,7 @@ export default function ServerOverviewClient() {
             },
           )}
         >
-          <CardContent className="px-6 py-3">
+          <CardContent className="flex h-full items-center px-6 py-3">
             <section className="flex flex-col gap-1">
               <p className="text-sm font-medium md:text-base">
                 {t("p_2532-2599_Offlineservers")}
@@ -171,22 +175,38 @@ export default function ServerOverviewClient() {
             },
           )}
         >
-          <CardContent className="relative px-6 py-3">
-            <section className="flex flex-col gap-1">
-              <p className="text-sm font-medium md:text-base">
-                {t("p_3463-3530_Totalbandwidth")}
-              </p>
-              {data?.result ? (
-                <section className="flex flex-col sm:flex-row pt-[8px] sm:items-center items-start gap-1">
-                  <p className="text-[12px]  text-nowrap font-semibold">
-                    ↑{formatBytes(data?.total_out_bandwidth)}
+          <CardContent className="flex h-full items-center relative px-3 py-1 pr-0 sm:px-6 sm:py-3">
+            <section className="flex flex-col gap-1 w-full">
+              <div className="flex items-center w-full justify-between">
+                <p className="text-sm font-medium md:text-base">
+                  {t("network")}
+                </p>
+                <section className="flex flex-row z-[999] bg-white/80 dark:bg-black/80 backdrop-blur-sm sm:items-center items-start pr-2 sm:pr-0 gap-1 ml-auto">
+                  <p className="sm:text-[12px] text-[10px]   text-nowrap font-medium">
+                    ↑{formatBytes(data?.total_out_bandwidth || 0)}
                   </p>
-                  <p className="text-[12px] text-nowrap font-semibold">
-                    ↓{formatBytes(data?.total_in_bandwidth)}
+                  <p className="sm:text-[12px] text-[10px]  text-nowrap font-medium">
+                    ↓{formatBytes(data?.total_in_bandwidth || 0)}
                   </p>
                 </section>
+              </div>
+              {data?.result ? (
+                <>
+                  <section className="flex flex-row mt-1.5 -mr-1 sm:items-center items-start gap-1">
+                    <p className="sm:text-[12px] flex items-center text-[10px] text-nowrap font-semibold">
+                      <ArrowUpCircleIcon className="size-3 mr-0.5 sm:mb-[1.1px]" />
+                      {formatBytes(data?.total_out_speed)}/s
+                    </p>
+                    <p className="sm:text-[12px] flex items-center text-[10px] text-nowrap font-semibold">
+                      <ArrowDownCircleIcon className="size-3 mr-0.5" />
+                      {formatBytes(
+                        data?.total_in_speed,
+                      )}/s
+                    </p>
+                  </section>
+                </>
               ) : (
-                <div className="flex h-7 items-center">
+                <div className="flex h-6 items-center">
                   <Loader visible={true} />
                 </div>
               )}

@@ -107,12 +107,14 @@ export default function ServerListClient() {
       : filteredServersByStatus.filter((server) => server.tag === tag);
 
   if (filter) {
-    // 根据使用流量进行从高到低排序
     filteredServers.sort((a, b) => {
+      if (!a.online_status && b.online_status) return 1;
+      if (a.online_status && !b.online_status) return -1;
+      if (!a.online_status && !b.online_status) return 0;
       return (
-        b.status.NetInTransfer +
-        b.status.NetOutTransfer -
-        (a.status.NetInTransfer + b.status.NetOutTransfer)
+        b.status.NetInSpeed +
+        b.status.NetOutSpeed -
+        (a.status.NetInSpeed + a.status.NetOutSpeed)
       );
     });
   }
