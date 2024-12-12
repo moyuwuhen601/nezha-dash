@@ -44,6 +44,8 @@ export async function GetNezhaData() {
       offline_servers: 0,
       total_out_bandwidth: 0,
       total_in_bandwidth: 0,
+      total_in_speed: 0,
+      total_out_speed: 0,
       result: [],
     };
 
@@ -66,6 +68,8 @@ export async function GetNezhaData() {
 
         data.total_out_bandwidth += element.status.NetOutTransfer;
         data.total_in_bandwidth += element.status.NetInTransfer;
+        data.total_in_speed += element.status.NetInSpeed;
+        data.total_out_speed += element.status.NetOutSpeed;
 
         // Remove unwanted properties
         delete element.ipv4;
@@ -123,6 +127,57 @@ export async function GetServerMonitor({ server_id }: { server_id: number }) {
   } catch (error) {
     console.error("GetServerMonitor error:", error);
     throw error;
+  }
+}
+
+export async function GetServerIP({
+  server_id,
+}: {
+  server_id: number;
+}): Promise<string> {
+  let nezhaBaseUrl = getEnv("NezhaBaseUrl");
+  if (!nezhaBaseUrl) {
+    console.error("NezhaBaseUrl is not set");
+    throw new Error("NezhaBaseUrl is not set");
+  }
+
+  // Remove trailing slash
+  nezhaBaseUrl = nezhaBaseUrl.replace(/\/$/, "");
+
+  try {
+    const response = await fetch(`${nezhaBaseUrl}/api/v1/server/details`, {
+      headers: {
+        Authorization: getEnv("NezhaAuth") as string,
+      },
+      next: {
+        revalidate: 0,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch data: ${response.status} ${errorText}`);
+    }
+
+    const resData = await response.json();
+
+    if (!resData.result) {
+      throw new Error("NezhaData fetch failed: 'result' field is missing");
+    }
+
+    const nezhaData = resData.result as NezhaAPI[];
+
+    // Find the server with the given ID
+    const server = nezhaData.find((element) => element.id === server_id);
+
+    if (!server) {
+      throw new Error(`Server with ID ${server_id} not found`);
+    }
+
+    return server?.valid_ip || server?.ipv4 || server?.ipv6 || "";
+  } catch (error) {
+    console.error("GetNezhaData error:", error);
+    throw error; // Rethrow the error to be caught by the caller
   }
 }
 

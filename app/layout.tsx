@@ -1,4 +1,5 @@
 // @auto-i18n-check. Please do not delete the line.
+import { ThemeColorManager } from "@/components/ThemeColorManager";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import getEnv from "@/lib/env-entry";
 import { FilterProvider } from "@/lib/network-filter-context";
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: customTitle || "NezhaDash",
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
   },
   robots: {
     index: disableIndex ? false : true,
@@ -59,11 +60,11 @@ export default async function LocaleLayout({
         <PublicEnvScript />
         <link
           rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"
+          href="https://fastly.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"
         />
         <link
           rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/font-logos@1/assets/font-logos.css"
+          href="https://fastly.jsdelivr.net/npm/font-logos@1/assets/font-logos.css"
         />
       </head>
       <body
@@ -81,7 +82,10 @@ export default async function LocaleLayout({
           >
             <NextIntlClientProvider messages={messages}>
               <FilterProvider>
-                <StatusProvider>{children}</StatusProvider>
+                <StatusProvider>
+                  <ThemeColorManager />
+                  {children}
+                </StatusProvider>
               </FilterProvider>
             </NextIntlClientProvider>
           </ThemeProvider>
