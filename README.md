@@ -5,9 +5,12 @@
 </div>
 
 > [!CAUTION]
-> 此为 V0 兼容版本，V1 版本 issue 也可提出
+> 此为 V0 兼容版本，与 V1 内置版本功能上可能有所不同
 >
-> 有关 V1 版本 pr 可移步 https://github.com/hamster1963/nezha-dash-react
+> V0 | V1 版本 issue 请在当前仓库发起
+
+> [!TIP]
+> 有关 V1 版本 pr 可移步 https://github.com/hamster1963/nezha-dash-v1
 
 ### 部署
 
@@ -28,11 +31,8 @@
 
 [环境变量介绍](https://nezhadash-docs.vercel.app/environment)
 
-![screen](/.github/1.webp)
-![screen](/.github/2.webp)
-![screen](/.github/3.webp)
-![screen](/.github/4.webp)
-![screen](/.github/1-dark.webp)
-![screen](/.github/2-dark.webp)
-![screen](/.github/3-dark.webp)
-![screen](/.github/4-dark.webp)
+![screen](/.github/v2-1.webp)
+![screen](/.github/v2-2.webp)
+![screen](/.github/v2-3.webp)
+![screen](/.github/v2-4.webp)
+![screen](/.github/v2-dark.webp)

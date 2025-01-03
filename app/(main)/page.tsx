@@ -1,27 +1,11 @@
-import ServerList from "@/components/ServerList";
-import ServerOverview from "@/components/ServerOverview";
-import { Suspense } from "react";
+import ServerListClient from "@/app/(main)/ClientComponents/main/ServerListClient"
+import ServerOverviewClient from "@/app/(main)/ClientComponents/main/ServerOverviewClient"
 
-import ServerGlobal from "./ClientComponents/Global";
-import GlobalLoading from "./ClientComponents/GlobalLoading";
-
-export const runtime = "edge";
-
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const global = (await searchParams).global;
+export default async function Home() {
   return (
     <div className="mx-auto grid w-full max-w-5xl gap-4 md:gap-6">
-      <ServerOverview />
-      {!global && <ServerList />}
-      {global && (
-        <Suspense fallback={<GlobalLoading />}>
-          <ServerGlobal />
-        </Suspense>
-      )}
+      <ServerOverviewClient />
+      <ServerListClient />
     </div>
-  );
+  )
 }
